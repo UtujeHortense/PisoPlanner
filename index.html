@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="assets/js/rotationManager.js"></script>
 	</head>
 	<body class="is-preload">
 
@@ -45,15 +46,15 @@
 								</thead>
 								<tbody> <!--People under the tasks-->
 									<tr>
-										<td>13/03/2023 - 19/03/2023</td> <!--To be calculated-->
-										<td>Alba/Berta</td>
-										<td>Celia/Laia</td>
-										<td>Sara/Hortense</td>
+										<td id ="thisweek">13/03/2023 - 19/03/2023</td> <!--To be calculated-->
+										<td id = "grpA1">Alba/Berta</td>
+										<td id = "grpA2">Celia/Laia</td>
+										<td id = "grpA3">Sara/Hortense</td>
 									</tr>
 								</tbody>
 							</table>
 							<header style="text-align: center;" class="major">
-								<h2 > Next week</h2>
+								<h2 > Next weeks</h2>
 							</header>
 			
 							<div class="table-wrapper">
@@ -68,10 +69,16 @@
 									</thead>
 									<tbody> <!--People under the tasks-->
 										<tr>
-											<td>20/03/2023 - 26/03/2023</td> <!--To be calculated-->
-											<td>Sara/Hortense</td> <!--Should use variable-->
-											<td>Alba/Berta</td>
-											<td>Celia/Laia</td>
+											<td id ="nextweek">20/03/2023 - 26/03/2023</td> <!--To be calculated-->
+											<td id = "grpB1">Alba/Berta</td>
+											<td id = "grpB2">Celia/Laia</td>
+											<td id = "grpB3">Sara/Hortense</td>
+										</tr>
+										<tr>
+											<td id ="nextnextweek">20/03/2023 - 26/03/2023</td> <!--To be calculated-->
+											<td id = "grpC1">Alba/Berta</td>
+											<td id = "grpC2">Celia/Laia</td>
+											<td id = "grpC3">Sara/Hortense</td>
 										</tr>
 							
 									</tbody>
@@ -79,6 +86,8 @@
 							</div>
 					
 				</div>
+				<li><a href="#" onclick="updateTables()" class="button">Update</a></li>
+				<li><a href="#" onclick="setTables()" class="button">Set tables</a></li>
 			</section>
 		
 		<!-- Two -->
@@ -499,6 +508,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			
 
 	</body>
 </html>
