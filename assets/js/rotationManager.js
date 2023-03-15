@@ -3,12 +3,20 @@ const players = ["Sara", "Hortense", "Celía", "Laia", "Alba", "Berta"]
 var pairs = [[players[0], players[1]], [players[2], players[3]], [players[4], players[5]]]
 
 var currentDate = thisweek();
-
-if (currentDate == nextDate) {
+var checkNext;
+//check if next week has already started
+getsaveddate().then(data => {console.log("after saved", data.nextweek); checkNext = data.nextweek;})
+console.log("first date check", currentDate.toDateString() == checkNext)
+if (currentDate.toDateString == checkNext) {
     updateTables()
 }
-var nextDate = nextweek();
+nextDate = nextweek();
+// save next week date in a database
+datepayload = {nextweek: nextDate.toDateString()}
+savedate(datepayload).then(data => {console.log("after saving", data);})
+
 var nextnextDate = nextnextweek(nextDate)
+
 
 window.onload = function() {
     //when the document is finished loading, replace everything with dates
@@ -18,12 +26,20 @@ document.getElementById("nextnextweek").innerHTML=nextnextDate.toDateString();
 setTables();
 } 
 
-function nextweek(){
+function thisweek() {
     var today = new Date();
     weekDay = today.getDay().toString();
-    if (weekDay == 1) {
-        var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+7);
-    }
+    count = weekDay - 1;
+    var thisweek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - count);
+    return thisweek;
+}
+
+function nextweek(){
+    var today = new Date();
+    weekDay = today.getDay()
+    var daysUntilNextMonday = 1 + (7 - weekDay) % 7;
+   
+    var nextweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+ daysUntilNextMonday);
     return nextweek;
 }
 
@@ -32,13 +48,6 @@ function nextnextweek(nextweek){
     return nextnextweek;
 }
 
-function thisweek() {
-    var today = new Date();
-    weekDay = today.getDay().toString();
-    count = weekDay - 1;
-    var thisweek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - count);
-    return thisweek;
-}
 
 async function setTables() {
     //rotate 3 times due to the number of tasks
@@ -63,7 +72,7 @@ async function setTables() {
 async function getindexes() {
     let obj;
     const options = {method: 'GET', headers: {Accept: 'application/json'}};
-    const res = await fetch('http://127.0.0.1:8080/getindexes', options)
+    const res = await fetch('https://easy-blue-cod-toga.cyclic.app/getindexes', options)
   
     obj = await res.json();
   
@@ -71,10 +80,10 @@ async function getindexes() {
     return obj;
   }
 
-  async function setindexes(payload) {
+async function setindexes(payload) {
     let obj;
-    const options = {method: 'POST', body: payload ,  headers: {Accept: 'application/json'}};
-    const res = await fetch('http://127.0.0.1:8080/setindexes', options)
+    const options = {method: 'POST', body: payload ,  headers: {Accept: 'application/json', 'Content-Type': 'application/json'}};
+    const res = await fetch('https://easy-blue-cod-toga.cyclic.app/setindexes', options)
   
     obj = await res.json();
   
@@ -82,6 +91,33 @@ async function getindexes() {
     return obj;
   }
   
+async function setdate(payload) {
+    let obj;
+    const options = {method: 'POST', body: payload ,  headers: {Accept: 'application/json', 'Content-Type': 'application/json'}};
+    const res = await fetch('https://easy-blue-cod-toga.cyclic.app/setnextmonday', options)
+  
+    obj = await res.json();
+
+    return obj;
+  }
+
+async function getdate(payload) {
+    let obj;
+    const options = {method: 'GET', headers: {Accept: 'application/json'}};
+    const res = await fetch('https://easy-blue-cod-toga.cyclic.app/getnextmonday', options)
+    obj = await res.json();
+    return obj;
+  }
+  
+async function getsaveddate() {
+    const date = await getdate();
+    return date.nextweek;
+}
+
+async function savedate(payload) {
+    const date = await setdate(JSON.stringify(payload));
+    return date;
+}
 
 async function updateTables() {
     //connect to database
