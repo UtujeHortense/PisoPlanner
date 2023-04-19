@@ -5,9 +5,11 @@ var pairs = [[players[0], players[1]], [players[2], players[3]], [players[4], pl
 var currentDate = thisweek();
 var checkNext;
 //check if next week has already started
-getsaveddate().then(data => {console.log("after saved", data.nextweek); checkNext = data.nextweek;})
-console.log("first date check", currentDate.toDateString() == checkNext)
-if (currentDate.toDateString == checkNext) {
+getsaveddate().then(data => {console.log("after saved", data); checkNext = data;})
+val = currentDate.toDateString() == checkNext
+console.log("value", val)
+if (val == true) {
+    console.log("updating tables")
     updateTables()
 }
 nextDate = nextweek();
